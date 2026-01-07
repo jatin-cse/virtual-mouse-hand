@@ -47,7 +47,7 @@ py -3.11 -m pip install opencv-python mediapipe pyautogui
 
 ---
 
-## ▶️ How to Run
+## How to Run
 
 1. Open **Command Prompt**
 2. Navigate to the project folder:
