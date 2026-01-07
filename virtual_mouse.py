@@ -4,17 +4,25 @@ import pyautogui
 import time
 import math
 
+# Screen size
 screen_w, screen_h = pyautogui.size()
 
+# Camera
 cap = cv2.VideoCapture(0)
 
+# MediaPipe Hands
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(max_num_hands=1)
 mp_draw = mp.solutions.drawing_utils
 
+# Smooth movement
 prev_x, prev_y = 0, 0
 smoothening = 7
 
+# Interaction box margin
+frame_margin = 80
+
+# Timing control
 last_left_click = 0
 last_right_click = 0
 last_scroll_time = 0
@@ -35,18 +43,30 @@ while True:
     rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     result = hands.process(rgb)
 
+    # Draw interaction box
+    cv2.rectangle(frame,
+                  (frame_margin, frame_margin),
+                  (w - frame_margin, h - frame_margin),
+                  (255, 0, 255), 2)
+
     if result.multi_hand_landmarks:
         for hand in result.multi_hand_landmarks:
             lm = hand.landmark
 
+            # Finger tips
             ix, iy = int(lm[8].x * w), int(lm[8].y * h)     # Index
             mx, my = int(lm[12].x * w), int(lm[12].y * h)  # Middle
             tx, ty = int(lm[4].x * w), int(lm[4].y * h)    # Thumb
 
-            # Move mouse
-            screen_x = int(lm[8].x * screen_w)
-            screen_y = int(lm[8].y * screen_h)
+            # Clamp inside interaction box
+            ix = max(frame_margin, min(w - frame_margin, ix))
+            iy = max(frame_margin, min(h - frame_margin, iy))
 
+            # Map to screen
+            screen_x = int((ix - frame_margin) * screen_w / (w - 2 * frame_margin))
+            screen_y = int((iy - frame_margin) * screen_h / (h - 2 * frame_margin))
+
+            # Smooth movement
             curr_x = prev_x + (screen_x - prev_x) / smoothening
             curr_y = prev_y + (screen_y - prev_y) / smoothening
             pyautogui.moveTo(curr_x, curr_y)
@@ -58,7 +78,7 @@ while True:
 
             current_time = time.time()
 
-            # ✅ LEFT CLICK (Thumb + Index only)
+            # LEFT CLICK (Thumb + Index)
             if d_ti < 30 and d_tm > 40 and current_time - last_left_click > click_delay:
                 pyautogui.click()
                 last_left_click = current_time
@@ -66,7 +86,7 @@ while True:
                             cv2.FONT_HERSHEY_SIMPLEX, 1,
                             (0, 255, 0), 3)
 
-            # ✅ RIGHT CLICK (Thumb + Index + Middle)
+            # RIGHT CLICK (Thumb + Index + Middle)
             if d_ti < 30 and d_tm < 30 and current_time - last_right_click > click_delay:
                 pyautogui.rightClick()
                 last_right_click = current_time
@@ -74,7 +94,7 @@ while True:
                             cv2.FONT_HERSHEY_SIMPLEX, 1,
                             (255, 0, 0), 3)
 
-            # SCROLL (Index + Middle)
+            # SCROLL (Index & Middle aligned)
             if abs(iy - my) < 30 and current_time - last_scroll_time > scroll_delay:
                 if iy < h // 2:
                     pyautogui.scroll(40)
@@ -91,7 +111,7 @@ while True:
 
             mp_draw.draw_landmarks(frame, hand, mp_hands.HAND_CONNECTIONS)
 
-    cv2.imshow("Hand Gesture Mouse", frame)
+    cv2.imshow("Hand Gesture Virtual Mouse", frame)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
