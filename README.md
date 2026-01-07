@@ -1,11 +1,11 @@
-# 🖱️ Hand Gesture Virtual Mouse (Python)
+# Hand Gesture Virtual Mouse (Python)
 
 Control your computer mouse using **hand gestures** in real time through a webcam.  
 This project uses **Python, OpenCV, MediaPipe, and PyAutoGUI** to turn your hand into a virtual mouse.
 
 ---
 
-## ✨ Features
+## Features
 - Smooth mouse movement using index finger
 - Left click using thumb + index finger pinch
 - Right click using thumb + index + middle finger pinch
@@ -15,7 +15,7 @@ This project uses **Python, OpenCV, MediaPipe, and PyAutoGUI** to turn your hand
 
 ---
 
-## 🖐 Gesture Controls
+## Gesture Controls
 
 | Gesture | Action |
 |------|------|
@@ -28,7 +28,7 @@ This project uses **Python, OpenCV, MediaPipe, and PyAutoGUI** to turn your hand
 
 ---
 
-## 🛠 Technologies Used
+## Technologies Used
 - Python 3.10 / 3.11  
 - OpenCV  
 - MediaPipe  
@@ -36,7 +36,7 @@ This project uses **Python, OpenCV, MediaPipe, and PyAutoGUI** to turn your hand
 
 ---
 
-## ⚙️ Installation
+## Installation
 
 Make sure Python **3.10 or 3.11** is installed.
 
@@ -61,7 +61,7 @@ py -3.11 virtual_mouse.py
 
 ---
 
-## 🎯 Learning Outcomes
+## Learning Outcomes
 - Hand landmark detection
 - Gesture recognition
 - Camera-to-screen coordinate mapping
@@ -70,7 +70,7 @@ py -3.11 virtual_mouse.py
 
 ---
 
-## 🚀 Future Improvements
+## Future Improvements
 - Drag and drop gesture
 - Mouse speed control
 - Multi-monitor support
@@ -78,7 +78,7 @@ py -3.11 virtual_mouse.py
 
 ---
 
-## 👨‍💻 Author
+## Author
 **Jatin**
 
-⭐ If you like this project, consider starring the repository!
+ If you like this project, consider starring the repository!
